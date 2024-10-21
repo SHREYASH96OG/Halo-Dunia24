@@ -1,0 +1,19 @@
+section .data
+    hello db 'Hello, World!', 0xA  ; The string to be printed, followed by a newline character
+    helloLen equ $ - hello         ; The length of the string
+
+section .text
+    global _start                  ; Required for the linker
+
+_start:
+    ; sys_write (system call number 1)
+    mov eax, 4                     ; sys_write
+    mov ebx, 1                     ; file descriptor 1 (stdout)
+    mov ecx, hello                 ; pointer to the message
+    mov edx, helloLen              ; length of the message
+    int 0x80                       ; call the kernel
+
+    ; sys_exit (system call number 60)
+    mov eax, 1                     ; sys_exit
+    xor ebx, ebx                   ; return code 0
+    int 0x80                       ; call the kernel
